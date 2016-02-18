@@ -1,22 +1,28 @@
 sudo: required
-dist: trusty
+services:
+- docker
 language: python
 python:
- - 2.7
- - 3.4
- - 3.5
+- 2.7
+- 3.4
+- 3.5
 before_install:
- - sudo apt-get update
- - sudo apt-get -y install apt-transport-https ca-certificates software-properties-common
- - sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
- - sudo add-apt-repository "deb https://apt.dockerproject.org/repo ubuntu-$(lsb_release -sc) main" 
- - sudo apt-get update
- - sudo apt-get install docker-engine
- - sudo service docker start
- - curl -L https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-`uname -s`-`uname -m` -o docker-machine
- - sudo mv docker-machine /usr/local/bin/.
- - sudo chmod +x /usr/local/bin/docker-machine
+- curl -L https://github.com/docker/machine/releases/download/v0.6.0/docker-machine-`uname
+  -s`-`uname -m` -o docker-machine
+- sudo mv docker-machine /usr/local/bin/.
+- sudo chmod +x /usr/local/bin/docker-machine
+- docker-machine create -d none --url /var/run/docker.sock python-docker-machine
+- docker-machine regenerate-certs --force python-docker-machine
 install:
- - pip install .
+- pip install .
 script:
- - nosetests
+- nosetests
+deploy:
+  provider: pypi
+  user: gijzelaerr
+  password:
+    secure: ROpWZqdIzgvH90nZCgEXwZ8xgSQ1zZSsgdNpJ+JqJ3S8EHbvOnS59dTJQfQEO/9p2IXMVBXot/aN/3T4WNMfLVfugNaBnhIYp8GNWqw0/Y6qZe+EPeNsYwnRbpkZy4883P8VLJSYiU3BDunD84xnCEdFvyzzLkxj2P6C5gR9YEmFH2E9CW5wlUHXfKteLS0cyJhHtCUWnyAkGSbb4QYJvERjemGSGGTUGdcjdpDNdip0C/qLsxPG8OovB8t1EdUEmD1k0bLjAzIu8McQ/G0jhm6wy5s43c8XVg7r0g0oxyEiG6Z6rpGR7TuoicL87EbzxMwgUxV7hlSznfNDkkwN/55U9TpZMWoOwiQSNjkkVWvCL7yAQxk06x3q0k9/oTsLKJsgVe36ufY5gSBw6n+qL6pbV8Q4OrdQ64QhfLpdLayrwDIFCA3flfLLa1dSG4cz2dR82CY0VqTskqqK7RQiZguYOQ8/e0mbqkc3asdhlet5tlChst/EinaU82J5mVjbPeCqM3hhQpJ7mpP7XySjXkFQnrDKrCz5AtFARq8ubdZpuhQHSkdFQR8D0Q2dUI9+fBGEMQFoYNf/kIW7Iu26kLYkL2wBPdfGJn0eHJBBSys0tftBryeEP+SaeOmLtOwfwdh/IMPiX3VZevslgQ0B281I74AZm2w8J2Fyj0+xAz8=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: gijzelaerr/python-docker-machine
