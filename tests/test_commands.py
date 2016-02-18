@@ -10,7 +10,7 @@ class TestCommands(unittest.TestCase):
         pass
 
     def test_config(self):
-        self.machine.config()
+        config = self.machine.config()
 
     def test_config_invalid_machine(self):
         with self.assertRaises(RuntimeError):
@@ -32,7 +32,7 @@ class TestCommands(unittest.TestCase):
         pass
 
     def test_ls(self):
-        pass
+        machines = self.machine.ls()
 
     def test_provision(self):
         pass
@@ -68,7 +68,7 @@ class TestCommands(unittest.TestCase):
         pass
 
     def test_version(self):
-        self.machine.version()
+        version = self.machine.version()
 
     def test_help(self):
         pass

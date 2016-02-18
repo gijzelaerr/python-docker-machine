@@ -5,6 +5,9 @@ import re
 
 from .version import __version__
 
+LS_FIELDS = ["Name", "Active", "ActiveHost", "ActiveSwarm", "DriverName", "State", "URL", "Swarm", "Error",
+             "DockerVersion", "ResponseTime"]
+
 
 def which(program):
 
@@ -47,15 +50,15 @@ class Machine:
         stdout, stderr = p.communicate()
         error_code = p.returncode
         if raise_error and error_code:
-            raise RuntimeError("cmd returned error %s: %s" % (error_code, stderr.decode(('utf-8')).strip()))
-        return stdout, stderr, error_code
+            raise RuntimeError("cmd returned error %s: %s" % (error_code, stderr.decode('utf-8').strip()))
+        return stdout.decode('utf-8'), stderr.decode('utf-8'), error_code
 
     def _match(self, cmd, regexp):
         """
         Run cmd and match regular expression regexp on it, return results
         """
         stdout, stderr, errorcode = self._run(cmd)
-        cleaned = stdout.decode('utf-8').strip()
+        cleaned = stdout.strip()
         match = re.match(regexp, cleaned)
         if not match:
             raise RuntimeError("can't parse output (\"%s\")" % (cleaned))
@@ -71,10 +74,28 @@ class Machine:
         """
         Returns the docker configuration for the given machine
 
-        :param host: The machine name
+        :param machine: The machine name
         returns: tlscacert, tlscert, tlskey, host
         """
         cmd = ["config", machine]
         regexp = """--tlsverify\n--tlscacert="(.+)"\n--tlscert="(.+)"\n--tlskey="(.+)"\n-H=(.+)"""
         match = self._match(cmd, regexp)
         return match.group(1, 2, 3)
+
+    def ls(self):
+        """
+        List machines
+        """
+        seperator = "\t"
+        fields = seperator.join(["{{.%s}}" % i for i in LS_FIELDS])
+        cmd = ["ls", "-f", fields]
+        stdout, stderr, errorcode = self._run(cmd)
+        machines = []
+        for line in stdout.split("\n"):
+            machine = {LS_FIELDS[index]: value for index, value in enumerate(line.split(seperator))}
+            machines.append(machine)
+        return machines
+
+
+
+
