@@ -52,3 +52,6 @@ test with nose::
     Ran 22 tests in 0.262s
 
 or with tox::
+
+    $ tox
+
