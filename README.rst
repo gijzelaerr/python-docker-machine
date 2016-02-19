@@ -22,6 +22,10 @@ or::
 usage
 -----
 
+.. image:: https://readthedocs.org/projects/python-docker-machine/badge/?version=latest
+:target: http://python-docker-machine.readthedocs.org/en/latest/?badge=latest
+:alt: Documentation Status
+
 ::
 
      import machine
