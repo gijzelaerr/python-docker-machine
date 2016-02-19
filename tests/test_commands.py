@@ -4,13 +4,13 @@ import os
 import machine
 
 # machine name used for testing
-TEST_MACHINE = "python-docker-machine"
+TEST_MACHINE = os.environ.get("DOCKER_MACHINE", "python-docker-machine")
 
 # invalid machine name
-INVALID_MACHINE = "python-docker-machine-invalid"
+INVALID_MACHINE = TEST_MACHINE + "-invalid"
 
 # temporary machine name
-TEMPORARY_MACHINE = "python-docker-machine-temporary"
+TEMPORARY_MACHINE = TEST_MACHINE + "-temporary"
 
 
 class TestCommands(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestCommands(unittest.TestCase):
         error = "can't find machine '%s', please create before running test suite." % TEST_MACHINE
         cls.machine = machine.machine.Machine()
         exists = cls.machine.exists(machine=TEST_MACHINE)
-        cls.assertTrue(exists, error)
+        assert exists, error
 
     @classmethod
     def tearDownClass(cls):
