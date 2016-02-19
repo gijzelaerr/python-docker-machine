@@ -42,9 +42,13 @@ https://docs.docker.com/machine/install-machine/
 running the test suite
 ----------------------
 
-Make sure docker-machine is available on your system path.
+Make sure docker-machine is available on your system path. Next you need to create a docker machine with the name
+``python-docker-machine`` with the driver of your choice, for example the virtualbox driver::
 
-test with nose::
+   $ docker-machine create -d virtualbox python-docker-machine
+
+
+Now you can run the tests with nose::
 
     $  nosetests
     ......................
