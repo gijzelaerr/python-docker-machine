@@ -6,13 +6,9 @@ setup(
     name="python-docker-machine",
     version=__version__,
     packages=find_packages(),
-    scripts=[],
-    install_requires=['six'],
-
     package_data={
-        '': ['*.txt', '*.rst'],
+        '': ['*.rst'],
     },
-
     author="Gijs Molenaar",
     author_email="gijs@pythonic.nl",
     description="Python wrapper around docker-machine",
