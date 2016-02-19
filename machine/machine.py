@@ -290,7 +290,7 @@ class Machine:
         Print which machine is active
 
         Returns:
-            List[str}: a list of machines that are active
+            List[str]: a list of machines that are active
         """
         cmd = ["active"]
         stdout, stderr, error_code = self._run(cmd, raise_error=False)

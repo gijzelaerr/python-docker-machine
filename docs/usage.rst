@@ -1,5 +1,5 @@
-machine package
-===============
+Usage
+=====
 
 .. automodule:: machine.machine
     :members:
