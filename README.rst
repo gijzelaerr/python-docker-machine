@@ -23,8 +23,8 @@ usage
 -----
 
 .. image:: https://readthedocs.org/projects/python-docker-machine/badge/?version=latest
-:target: http://python-docker-machine.readthedocs.org/en/latest/?badge=latest
-:alt: Documentation Status
+   :target: http://python-docker-machine.readthedocs.org/en/latest/?badge=latest
+   :alt: Documentation Status
 
 ::
 
