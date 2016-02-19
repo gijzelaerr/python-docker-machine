@@ -2,7 +2,7 @@ import re
 from subprocess import Popen, PIPE
 import json
 
-from machine import which
+from .helper import which
 
 LS_FIELDS = ["Name", "Active", "ActiveHost", "ActiveSwarm", "DriverName", "State", "URL", "Swarm", "Error",
              "DockerVersion", "ResponseTime"]
