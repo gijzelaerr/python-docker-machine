@@ -1,5 +1,6 @@
 import unittest
 import os
+import docker
 
 import machine
 
@@ -40,7 +41,10 @@ class TestCommands(unittest.TestCase):
         self.machine.active()
 
     def test_config(self):
-        self.machine.config(machine=TEST_MACHINE)
+        config = self.machine.config(machine=TEST_MACHINE)
+        client = docker.Client(**config)
+        self.assertTrue(client.ping())
+
 
     def test_config_invalid_machine(self):
         with self.assertRaises(RuntimeError):

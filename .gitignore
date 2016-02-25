@@ -4,4 +4,4 @@ python_docker_machine.egg-info/
 .tox
 build/
 docs/_build/
-
+.virtualenv/

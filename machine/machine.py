@@ -2,6 +2,7 @@ import re
 from subprocess import Popen, PIPE
 import json
 
+from docker.tls import TLSConfig
 from .helper import which
 
 LS_FIELDS = ["Name", "Active", "ActiveHost", "ActiveSwarm", "DriverName", "State", "URL", "Swarm", "Error",
@@ -77,9 +78,20 @@ class Machine:
             tuple: tlscacert, tlscert, tlskey, host
         """
         cmd = ["config", machine]
-        regexp = """--tlsverify\n--tlscacert="(.+)"\n--tlscert="(.+)"\n--tlskey="(.+)"\n-H=(.+)"""
+        regexp = """(--tlsverify\n)?--tlscacert="(.+)"\n--tlscert="(.+)"\n--tlskey="(.+)"\n-H=(.+)"""
         match = self._match(cmd, regexp)
-        return match.group(1, 2, 3, 4)
+        tlsverify, tlscacert, tlscert, tlskey, host = match.group(1, 2, 3, 4, 5)
+        tlsverify = bool(tlsverify)
+
+        params = {
+            'base_url': host.replace('tcp://', 'https://') if tlsverify else host,
+            'tls': TLSConfig(
+                client_cert=(tlscert, tlskey),
+                ca_cert=tlscacert,
+                verify=True
+            )
+        }
+        return params
 
     def ls(self):
         """
