@@ -75,7 +75,7 @@ class Machine:
         Args:
             machine: The machine name
         Returns:
-            tuple: tlscacert, tlscert, tlskey, host
+            dict: base_url, tls
         """
         cmd = ["config", machine]
         regexp = """(--tlsverify\n)?--tlscacert="(.+)"\n--tlscert="(.+)"\n--tlskey="(.+)"\n-H=(.+)"""
