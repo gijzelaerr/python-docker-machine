@@ -11,6 +11,7 @@ before_install:
   -s`-`uname -m` -o docker-machine
 - sudo mv docker-machine /usr/local/bin/.
 - sudo chmod +x /usr/local/bin/docker-machine
+- export
 - docker-machine create -d none --url /var/run/docker.sock python-docker-machine
 - docker-machine regenerate-certs --force python-docker-machine
 install:
