@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
-from machine.version import __version__
+__version__ = "0.2.1"
 
-requirements = [
+install_requires = [
     'docker-py',
 ]
 
@@ -10,7 +10,7 @@ setup(
     name="python-docker-machine",
     version=__version__,
     packages=find_packages(),
-    install_requirements=requirements,
+    install_requires=install_requires,
     package_data={
         '': ['*.rst'],
     },
