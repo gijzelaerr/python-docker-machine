@@ -15,7 +15,8 @@ before_install:
 #- docker-machine regenerate-certs --force python-docker-machine
 install:
 - pip install .
-#script:
+script:
+- true
 #- nosetests
 deploy:
   provider: pypi
