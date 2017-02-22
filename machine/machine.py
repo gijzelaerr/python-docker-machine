@@ -38,6 +38,24 @@ class Machine:
             raise RuntimeError("cmd returned error %s: %s" % (error_code, stderr.decode('utf-8').strip()))
         return stdout.decode('utf-8'), stderr.decode('utf-8'), error_code
 
+    def _run_blocking(self, cmd, raise_error=True):
+        """
+        Run a docker-machine command, optionally raise error if error code != 0
+        Args:
+            cmd (List[str]): a list of the docker-machine command with the arguments to run
+            raise_error (bool): raise an exception on non 0 return code
+        Returns:
+            tuple: stdout, stderr, error_code
+        """
+        cmd = [self.path] + cmd
+        p = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        stdout, stderr = p.communicate()
+        error_code = p.wait()
+
+        if raise_error and error_code:
+            raise RuntimeError("cmd returned error %s: %s" % (error_code, stderr.decode('utf-8').strip()))
+        return stdout.decode('utf-8'), stderr.decode('utf-8'), error_code
+
     def _match(self, cmd, regexp):
         """
         Run cmd and match regular expression regexp on it, return results.
@@ -67,6 +85,26 @@ class Machine:
         regexp = "docker-machine version (.+), build (.+)"
         match = self._match(cmd, regexp)
         return match.group(1)
+
+    def create(self, name, driver='virtualbox', blocking=True):
+        """
+        Create a docker machine using the provided name and driver
+        NOTE: This takes a loooooong time
+
+        Args:
+            name (str): the name to give to the machine (must be unique)
+            driver: the driver to use to create the machine
+            blocking (bool): should wait for completion before exiting
+
+        Returns:
+            int: error code from the run
+        """
+        cmd = ['create', '--driver', driver, name]
+        if blocking:
+            stdout, stderr, errorcode = self._run_blocking(cmd)
+        else:
+            stdout, stderr, errorcode = self._run(cmd)
+        return errorcode
 
     def config(self, machine="default"):
         """
