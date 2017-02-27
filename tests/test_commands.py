@@ -85,6 +85,12 @@ class TestCommands(unittest.TestCase):
         destination = "%s:." % TEST_MACHINE
         self.machine.scp(source, destination)
 
+    def test_ssh_echo(self):
+        self.assertTrue(self.machine.exists(machine=TEST_MACHINE))
+        ret = self.machine.ssh(TEST_MACHINE, 'echo \"Hello\"')
+        if ret != ['Hello']:
+            raise RuntimeError
+
     def test_start(self):
         self.machine.stop(machine=TEST_MACHINE)
         self.machine.start(machine=TEST_MACHINE)
