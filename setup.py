@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 install_requires = [
     'docker-py',
@@ -29,6 +29,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Topic :: Utilities',
     ],
 )
