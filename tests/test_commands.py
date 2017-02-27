@@ -1,6 +1,7 @@
 import unittest
 import os
 import docker
+from time import sleep
 
 import machine
 
@@ -49,11 +50,6 @@ class TestCommands(unittest.TestCase):
     def test_config_invalid_machine(self):
         with self.assertRaises(RuntimeError):
             self.machine.config(machine=INVALID_MACHINE)
-
-    @unittest.skip("disabled since it takes ages")
-    def test_create_and_rm(self):
-        self.machine.create(machine=TEMPORARY_MACHINE)
-        self.machine.rm(machine=TEMPORARY_MACHINE)
 
     def test_env(self):
         self.machine.env(machine=TEST_MACHINE)
@@ -118,3 +114,40 @@ class TestCommands(unittest.TestCase):
 
     def test_version(self):
         version = self.machine.version()
+
+    def test_create_already_exists(self):
+        self.assertTrue(self.machine.exists(machine=TEST_MACHINE))
+        try:
+            self.machine.create(TEST_MACHINE, blocking=True)
+        except RuntimeError:
+            pass # The test should raise this error
+        try:
+            self.machine.create(TEST_MACHINE, blocking=False)
+        except RuntimeError:
+            pass # The test should raise this error
+
+    @unittest.skip("disabled since it takes ages")
+    def test_create_non_blocking(self):
+        self.assertFalse(self.machine.exists(machine=TEMPORARY_MACHINE))
+
+        # Create a new machine with blocking=False, and wait...
+        self.machine.create(TEMPORARY_MACHINE, blocking=False)
+
+        max_time = 300 #Max waiting time opf 300 seconds
+        for sec in range(max_time) :
+            sleep(1)
+            if self.machine.exists(machine=TEMPORARY_MACHINE):
+                break
+        self.assertTrue(self.machine.exists(machine=TEMPORARY_MACHINE))
+        self.machine.stop(machine=TEMPORARY_MACHINE)
+        self.machine.rm(machine=TEMPORARY_MACHINE)
+
+    @unittest.skip("disabled since it takes ages")
+    def test_create_blocking(self):
+        self.assertFalse(self.machine.exists(machine=TEMPORARY_MACHINE))
+
+        # Create a new machine with blocking=True, and wait...
+        self.machine.create(TEMPORARY_MACHINE, blocking=True)
+        self.assertTrue(self.machine.exists(machine=TEMPORARY_MACHINE))
+        self.machine.stop(machine=TEMPORARY_MACHINE)
+        self.machine.rm(machine=TEMPORARY_MACHINE)
