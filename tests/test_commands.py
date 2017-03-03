@@ -33,7 +33,7 @@ class TestCommands(unittest.TestCase):
             cls.machine.rm(machine=TEMPORARY_MACHINE)
         except RuntimeError:
             pass
-
+    
     def setUp(self):
         if not self.machine.status(machine=TEST_MACHINE):
             self.machine.start(machine=TEST_MACHINE)
@@ -80,6 +80,10 @@ class TestCommands(unittest.TestCase):
         source = os.path.realpath(__file__)
         destination = "%s:." % TEST_MACHINE
         self.machine.scp(source, destination)
+
+    def test_ssh_echo(self):
+        self.assertTrue(self.machine.exists(machine=TEST_MACHINE))
+        self.assertEqual(self.machine.ssh(TEST_MACHINE, 'echo \"Hi\"'), ['Hi'])
 
     def test_start(self):
         self.machine.stop(machine=TEST_MACHINE)

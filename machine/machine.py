@@ -364,3 +364,18 @@ class Machine:
         cmd = ["scp"] + r + [source, destination]
         stdout, _, _ = self._run(cmd)
         return stdout.split()
+
+    def ssh(self, machine, cmd):
+        """
+        Run a command on a machine through docker-machine ssh
+
+        Args:
+            machine (str): machine name
+            cmd (str): command to run
+
+        Returns:
+            List[str]: output of the ssh command
+        """
+        ssh_cmd = ['ssh', machine, cmd]
+        stdout, _, _ = self._run(ssh_cmd)
+        return stdout.split()
