@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 __version__ = "0.2.2"
 
 install_requires = [
-    'docker-py',
+    'docker',
 ]
 
 setup(
