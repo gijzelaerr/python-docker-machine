@@ -43,7 +43,7 @@ class TestCommands(unittest.TestCase):
 
     def test_config(self):
         config = self.machine.config(machine=TEST_MACHINE)
-        client = docker.Client(**config)
+        client = docker.APIClient(**config)
         self.assertTrue(client.ping())
 
 
