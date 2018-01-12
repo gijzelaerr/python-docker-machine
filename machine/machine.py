@@ -86,7 +86,7 @@ class Machine:
         match = self._match(cmd, regexp)
         return match.group(1)
 
-    def create(self, name, driver='virtualbox', blocking=True):
+    def create(self, name, driver='virtualbox', blocking=True, xarg=[]):
         """
         Create a docker machine using the provided name and driver
         NOTE: This takes a loooooong time
@@ -100,6 +100,7 @@ class Machine:
             int: error code from the run
         """
         cmd = ['create', '--driver', driver, name]
+        cmd = cmd + xarg
         if blocking:
             stdout, stderr, errorcode = self._run_blocking(cmd)
         else:
