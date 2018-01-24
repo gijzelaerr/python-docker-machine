@@ -99,8 +99,10 @@ class Machine:
         Returns:
             int: error code from the run
         """
-        cmd = ['create', '--driver', driver, name]
+        cmd = ['create', '--driver', driver]
         cmd = cmd + xarg
+        cmd.append(name)
+
         if blocking:
             stdout, stderr, errorcode = self._run_blocking(cmd)
         else:
