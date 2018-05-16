@@ -146,7 +146,8 @@ class Machine:
         cmd = ["ls", "-f", fields]
         stdout, stderr, errorcode = self._run(cmd)
         machines = []
-        for line in stdout.split("\n"):
+        lines = (l for l in stdout.split("\n") if len(l) > 0)
+        for line in lines:
             machine = {LS_FIELDS[index]: value for index, value in enumerate(line.split(seperator))}
             machines.append(machine)
         return machines
