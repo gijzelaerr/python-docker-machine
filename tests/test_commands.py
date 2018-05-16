@@ -64,7 +64,8 @@ class TestCommands(unittest.TestCase):
         self.machine.kill(machine=TEST_MACHINE)
 
     def test_ls(self):
-        self.machine.ls()
+        for m in self.machine.ls():
+            self.assertNotEqual(m['Name'], '')
 
     def test_provision(self):
         self.machine.provision(machine=TEST_MACHINE)
