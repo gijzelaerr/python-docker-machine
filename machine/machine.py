@@ -147,8 +147,9 @@ class Machine:
         stdout, stderr, errorcode = self._run(cmd)
         machines = []
         for line in stdout.strip().split("\n"):
-            machine = {LS_FIELDS[index]: value for index, value in enumerate(line.split(seperator))}
-            machines.append(machine)
+            if line:
+                machine = {LS_FIELDS[index]: value for index, value in enumerate(line.split(seperator))}
+                machines.append(machine)
         return machines
 
     def exists(self, machine="default"):
